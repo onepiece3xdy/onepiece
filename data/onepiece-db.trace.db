@@ -1,0 +1,12 @@
+2025-12-18 17:15:31.432250+05:30 jdbc[23]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CHARACTERCHARACTER" not found; SQL statement:
+DELETE CHARACTERCHARACTER [42102-232]
+2025-12-18 17:16:30.780696+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CHARACTER" not found (this database is empty); SQL statement:
+select c1_0.id,c1_0.bounty,c1_0.crew,c1_0.devil_fruit,c1_0.first_appearance,c1_0.haki_type,c1_0.image_url,c1_0.name,c1_0.origin,c1_0.quote,c1_0.race,c1_0.role,c1_0.status from character c1_0 [42104-232]
+2025-12-18 20:07:43.030212+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CHARACTER" not found (this database is empty); SQL statement:
+select c1_0.id,c1_0.bounty,c1_0.crew,c1_0.devil_fruit,c1_0.first_appearance,c1_0.haki_type,c1_0.image_url,c1_0.name,c1_0.origin,c1_0.quote,c1_0.race,c1_0.role,c1_0.status from character c1_0 [42104-232]
+2025-12-18 20:07:57.652951+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CHARACTER" not found (this database is empty); SQL statement:
+insert into character (bounty,crew,devil_fruit,first_appearance,haki_type,image_url,name,origin,quote,race,role,status,id) values (?,?,?,?,?,?,?,?,?,?,?,?,default) [42104-232]

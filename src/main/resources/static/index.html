@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>One Piece Character Search</title>
+
+    <!-- 🏴‍☠️ One Piece style font -->
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+
+    <style>
+        @media (max-width: 480px) {
+       .search-container {
+           width: 90%;
+           padding: 20px;
+           transform: scale(0.95); /* slight zoom-out */
+       }
+
+       #name {
+           width: 100%;
+           font-size: 14px;
+       }
+
+       button {
+           width: 100%;
+           padding: 10px;
+           font-size: 14px;
+       }
+
+       #suggestions {
+           width: 100%;
+       }
+
+       .flip-card {
+           width: 90%;
+           height: auto;
+       }
+
+       .flip-card-inner {
+           height: auto;
+       }
+
+       .flip-card-front, .flip-card-back {
+           padding: 10px;
+       }
+
+       .image-box {
+           width: 160px;
+           height: 180px;
+       }
+
+       .flip-card-back h3 {
+           font-size: 22px;
+       }
+
+       .wanted {
+           font-size: 36px;
+       }
+
+       .dead-alive {
+           font-size: 24px;
+       }
+
+       .bounty {
+           font-size: 18px;
+       }
+
+       .role {
+           font-size: 16px;
+       }
+   }
+       body {
+           font-family: 'Trebuchet MS', sans-serif;
+           background: url('/images/onepiece_bg.jpg') no-repeat center center fixed;
+           background-size: cover;
+           color: #fff;
+           display: flex;
+           justify-content: center;
+           align-items: flex-start;
+           min-height: 100vh;
+           padding-top: 50px;
+       }
+
+       .search-container {
+           background-color: rgba(0, 0, 0, 0.75);
+           padding: 30px;
+           border-radius: 15px;
+           text-align: center;
+           width: 360px;
+           box-shadow: 0 0 20px gold;
+           border: 2px solid #ffd700;
+           transform: scale(0.9);
+           transform-origin: top center;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+       }
+
+       h2 {
+           font-family: 'Pirata One', cursive;
+           letter-spacing: 2px;
+           text-shadow: 2px 2px 0 #000, 0 0 12px gold;
+           margin-bottom: 15px;
+       }
+
+       h3 { font-family: 'Pirata One', cursive; letter-spacing: 1px; }
+
+       #name {
+           width: 85%;
+           padding: 10px;
+           font-size: 16px;
+           border-radius: 8px;
+           border: 2px solid #ffd700;
+           margin-bottom: 5px;
+       }
+
+       button {
+           padding: 10px 25px;
+           font-size: 16px;
+           border: none;
+           border-radius: 8px;
+           background-color: #ffd700;
+           color: black;
+           cursor: pointer;
+           font-weight: bold;
+       }
+
+       button:hover { background-color: #ffcc00; }
+
+       #suggestions {
+           border: 1px solid #ffd700;
+           background-color: rgba(0,0,0,0.85);
+           max-height: 150px;
+           overflow-y: auto;
+           border-radius: 8px;
+           margin: 5px auto 10px;
+           width: 85%;
+       }
+
+       .suggestion-item { padding: 6px; cursor: pointer; }
+       .suggestion-item:hover { background-color: rgba(255, 215, 0, 0.3); }
+
+       #result { margin-top: 20px; display: flex; justify-content: center; flex-wrap: wrap; }
+
+       /* 🃏 FLIP CARD STABLE */
+       .flip-card {
+           perspective: 1000px;
+           margin: 20px;
+           width: 300px;
+           height: 380px;
+           position: relative;
+       }
+
+       .flip-card-inner {
+           position: absolute;
+           top: 0; left: 0;
+           width: 100%;
+           height: 100%;
+           transform-style: preserve-3d;
+           transition: transform 0.8s ease;
+           transform-origin: center center;
+           cursor: pointer;
+       }
+
+       .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+       .flip-card-front,
+       .flip-card-back {
+           position: absolute;
+           top: 0; left: 0;
+           width: 100%;
+           height: 100%;
+           border-radius: 15px;
+           padding: 15px;
+           box-shadow: 0 0 15px gold;
+           backface-visibility: hidden;
+           box-sizing: border-box;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+       }
+
+       .flip-card-front {
+           background: rgba(0,0,0,0.85);
+           border: 2px solid #ffd700;
+       }
+
+       .flip-card-back {
+           transform: rotateY(180deg);
+           color: #000;
+           border: 4px solid #5b3a1e;
+           background: #f5deb3;
+           box-shadow: inset 0 0 15px #000;
+           text-align: center;
+           position: relative;
+       }
+
+       /* Straw Hat watermark */
+       .flip-card-back::after {
+           content: '';
+           background: url('/images/strawhat_logo.png') no-repeat center center;
+           background-size: 120px 120px;
+           opacity: 0.2;
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 120px;
+           height: 120px;
+           pointer-events: none;
+       }
+
+       /* Crew-based styling */
+       .crew-strawhat .flip-card-back { background: #f5deb3; border-color: #c1121f; }
+       .crew-marines .flip-card-back { background: #e0f2ff; border-color: #003566; }
+       .crew-pirate .flip-card-back  { background: #e6d3a3; border-color: #5b3a1e; }
+
+       .flip-card-back h3 {
+           font-size: 28px;
+           margin: 9px 0;
+           font-family: 'Pirata One', cursive;
+           letter-spacing: 2px;
+           text-align: center;
+       }
+
+       /* WANTED poster text */
+       .wanted { font-family: 'Pirata One', cursive; font-size: 50px; letter-spacing: 4px; margin: 2px 0; }
+       .dead-alive { font-size: 31px; font-weight: bold; margin: 3px 0 13px 0; }
+       .bounty { font-size: 22px; font-weight: bold; margin-top: 20px; }
+       .role { font-size: 19px; font-style: italic; margin-top: 3px; }
+       .tap-text { font-size: 12px; opacity: 0.7; margin-top: 5px; }
+
+       /* 🖼️ Image box */
+       .image-box {
+           width: 200px;
+           height: 220px;
+           margin: 10px auto;
+           border: 3px solid #ffd700;
+           border-radius: 12px;
+           background-color: #000;
+           overflow: hidden;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+       }
+       .image-box img {
+           width: 100%;
+           height: 100%;
+           object-fit: cover;
+           transform: scale(0.9);
+           transition: transform 0.3s ease;
+       }
+       .image-box:hover img { transform: scale(1); }
+
+       audio { margin-top: 10px; width: 100%; }
+
+       /* 📱 Responsive styles */
+       @media (max-width: 400px) {
+           .search-container { width: 95%; padding: 20px; transform: scale(1); }
+           #name { width: 100%; }
+           .flip-card { width: 90%; height: auto; }
+           .flip-card-back h3 { font-size: 22px; }
+           .wanted { font-size: 40px; }
+           .dead-alive { font-size: 25px; }
+           .bounty { font-size: 18px; }
+           .role { font-size: 16px; }
+           .image-box { width: 90%; height: auto; max-height: 220px; }
+       }
+    </style>
+</head>
+
+<body>
+<div class="search-container">
+    <h2>☠️ One Piece Character Search</h2>
+    <input type="text" id="name" placeholder="Enter character name" oninput="showSuggestions()" autocomplete="off" />
+    <div id="suggestions"></div>
+    <button onclick="search()">Search</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    function showSuggestions() {
+        const query = document.getElementById("name").value;
+        const suggestionBox = document.getElementById("suggestions");
+        if (!query) { suggestionBox.innerHTML = ""; return; }
+
+        fetch(`/api/character/suggestions?query=${query}`)
+            .then(res => res.json())
+            .then(data => {
+                suggestionBox.innerHTML = "";
+                data.forEach(c => {
+                    const div = document.createElement("div");
+                    div.className = "suggestion-item";
+                    div.innerText = c.name;
+                    div.onclick = () => {
+                        document.getElementById("name").value = c.name;
+                        suggestionBox.innerHTML = "";
+                    };
+                    suggestionBox.appendChild(div);
+                });
+            });
+    }
+
+    function search() {
+        const name = document.getElementById("name").value;
+        if (!name) { alert("Please enter a name"); return; }
+
+        fetch(`/api/character/search?name=${name}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    document.getElementById("result").innerHTML = "<p>No character found</p>";
+                    return;
+                }
+                const c = data[0];
+
+                document.getElementById("result").innerHTML = `
+                    <div class="flip-card crew-${getCrewClass(c.crew)}" onclick="flipCard(this)">
+                        <div class="flip-card-inner">
+                            <!-- FRONT -->
+                            <div class="flip-card-front">
+                                <div class="image-box">
+                                    <img src="${c.imageUrl}" alt="${c.name}">
+                                </div>
+                                <p class="tap-text">Tap to see details</p>
+                            </div>
+
+                            <!-- BACK -->
+                            <div class="flip-card-back">
+                                <p class="wanted">WANTED</p>
+                                <p class="dead-alive">DEAD OR ALIVE</p>
+                                <h3>${c.name}</h3>
+                                <p class="role">${c.role}</p>
+                                <p class="bounty">฿ ${c.bounty.toLocaleString()}</p>
+                                ${c.voiceLineUrl ? `
+                                    <audio controls>
+                                        <source src="${c.voiceLineUrl}" type="audio/mpeg">
+                                    </audio>` : ""}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById("result").innerHTML = "<p>Error fetching data</p>";
+            });
+    }
+
+    function flipCard(card) { card.classList.toggle("flipped"); }
+
+    function getCrewClass(crew) {
+        if (!crew) return "pirate";
+        const c = crew.toLowerCase();
+        if (c.includes("straw")) return "strawhat";
+        if (c.includes("marine")) return "marines";
+        return "pirate";
+    }
+</script>
+</body>
+</html>
