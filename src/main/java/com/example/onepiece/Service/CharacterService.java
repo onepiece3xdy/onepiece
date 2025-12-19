@@ -24,6 +24,7 @@ public class CharacterService {
     character.setRole(dto.getRole());
     character.setBounty(dto.getBounty());
     character.setImageUrl(dto.getImageUrl());
+    character.setVoiceLineUrl(dto.getVoiceLineUrl());
 
     Character saved = repo.save(character);
     return toResponseDto(saved);
@@ -59,6 +60,9 @@ public CharacterResponseDto partialUpdate(Long id, Map<String, Object> updates) 
         break;
       case "imageUrl":
         character.setImageUrl(asString.apply(value));
+        break;
+      case "voiceLineUrl":
+        character.setVoiceLineUrl(asString.apply(value));
         break;
       case "id":
         // ignore id updates
@@ -153,6 +157,7 @@ public CharacterResponseDto partialUpdate(Long id, Map<String, Object> updates) 
     dto.setRole(c.getRole());
     dto.setBounty(c.getBounty());
     dto.setImageUrl(c.getImageUrl());
+    dto.setVoiceLineUrl(c.getVoiceLineUrl());
     return dto;
   }
 

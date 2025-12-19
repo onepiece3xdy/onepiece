@@ -11,6 +11,7 @@ public class CharacterResponseDto {
     private String role;
     private Long bounty;
     private String imageUrl;
+    private String voiceLineUrl;
 
     // getters & setters
 }

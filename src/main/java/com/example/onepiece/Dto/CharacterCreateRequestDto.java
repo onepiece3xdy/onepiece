@@ -22,4 +22,6 @@ public class CharacterCreateRequestDto {
 
     @NotBlank
     private String imageUrl;
+
+    private String voiceLineUrl;
 }

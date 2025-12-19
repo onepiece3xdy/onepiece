@@ -23,5 +23,7 @@ public class Character {
   private String race;
   private String imageUrl;
   private String quote;
+  private String voiceLineUrl;
+
 
 }
